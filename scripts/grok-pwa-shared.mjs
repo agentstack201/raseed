@@ -81,6 +81,14 @@ export function appNameFromHost(hostHeader) {
   );
 }
 
+/** Host slug wins on *.grok.me. Everywhere else, use the service name. */
+export function resolveAppDisplayName(hostHeader, fallbackName = "") {
+  const fromHost = appNameFromHost(hostHeader);
+  if (fromHost !== DEFAULT_APP_NAME) return fromHost;
+  const fallback = String(fallbackName ?? "").trim();
+  return fallback || DEFAULT_APP_NAME;
+}
+
 /** True for Vercel system domains. Envoy rewrites origin Host to these; they SSO-protect `/og.jpg`. */
 function isVercelSystemHost(host) {
   return (
@@ -151,14 +159,15 @@ export function stripInstallParams(url) {
   return rest ? `${path}?${rest}` : path;
 }
 
-export function renderInstallPageHtml(template, { host, url } = {}) {
+export function renderInstallPageHtml(template, { host, url, appName } = {}) {
+  const name = resolveAppDisplayName(host, appName);
   return String(template)
-    .replaceAll("{{APP_NAME}}", escapeHtml(appNameFromHost(host)))
+    .replaceAll("{{APP_NAME}}", escapeHtml(name))
     .replaceAll("{{APP_URL}}", escapeHtml(stripInstallParams(url)));
 }
 
-export function renderWebManifest(hostHeader) {
-  const name = appNameFromHost(hostHeader);
+export function renderWebManifest(hostHeader, fallbackName = "") {
+  const name = resolveAppDisplayName(hostHeader, fallbackName);
   return JSON.stringify(
     {
       name,
