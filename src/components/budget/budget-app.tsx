@@ -29,7 +29,16 @@ export function BudgetApp() {
         <header className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-xl">
             <p className="text-sm font-semibold text-olive">» » ميزانية هادئة</p>
-            <h1 className="mt-2 text-5xl font-bold leading-none tracking-tight sm:text-6xl">رصيد</h1>
+            <div className="mt-3 flex items-center gap-3">
+              <img
+                src="/icon-192.png"
+                alt=""
+                width={56}
+                height={56}
+                className="h-14 w-14 rounded-2xl shadow-card"
+              />
+              <h1 className="text-5xl font-bold leading-none tracking-tight sm:text-6xl">رصيد</h1>
+            </div>
             <p className="mt-3 text-base leading-7 text-stone">
               ميزانيتك الشخصية وادخارك لهذا الشهر. كل شيء يُحفظ على جهازك، بلا حساب وبدون سيرفر.
             </p>
